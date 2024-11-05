@@ -38,14 +38,17 @@ python3 train.py \
     --save-dir assignments/03/mono_enhanced/checkpoints \
     --cuda 
 
---data data/en-fr-enhanced/prepared --source-lang fr --target-lang en --log-file assignments/03/mono_enhanced/log.log --save-dir assignments/03/mono_enhanced/checkpoints --cuda
+# --data data/en-fr-enhanced/prepared --source-lang fr --target-lang en --log-file assignments/03/mono_enhanced/log.log --save-dir assignments/03/mono_enhanced/checkpoints --cuda
 
 python3 translate.py \
     --data data/en-fr-enhanced/prepared \
     --dicts data/en-fr-enhanced/prepared \
-    --output assignments/03/mono_enhanced/translations.txt
-    --checkpoint-path assignments/03/mono_enhanced/checkpoints
-    --batch-size 25
+    --output assignments/03/mono_enhanced/translations.txt \
+    --checkpoint-path assignments/03/mono_enhanced/checkpoints \
+    --batch-size 25 \
     --cuda
+
+python3 translate.py --data data/en-fr-enhanced/prepared --dicts data/en-fr-enhanced/prepared --output assignments/03/mono_enhanced/translations.txt --checkpoint-path assignments/03/mono_enhanced/checkpoints --batch-size 25 --cuda
+
 
 echo "done."

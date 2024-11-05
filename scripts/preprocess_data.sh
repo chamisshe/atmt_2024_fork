@@ -13,8 +13,11 @@ tgt_lang=$3
 
 # set paths
 scripts=`dirname "$(readlink -f "$0")"`
+echo $scripts
 base=$scripts/..
+echo $base
 moses_scripts=$base/moses_scripts
+echo $moses_scripts
 preprocessed=$raw_data/../preprocessed
 prepared=$raw_data/../prepared
 
@@ -24,11 +27,10 @@ mkdir -p $prepared
 for lang in $src_lang $tgt_lang
     do
         echo "training truecase model for $lang"
-
         # normalise and tokenize punctuation in training
         # split for truecase model training
         cat $raw_data/train.$lang | perl $moses_scripts/normalize-punctuation.perl -l $lang | perl $moses_scripts/tokenizer.perl -l $lang -a -q > $preprocessed/train.$lang
-        
+        # ^^^^^^^^^^^^!!!!
         # train truecase model for language
         perl $moses_scripts/train-truecaser.perl --model $preprocessed/tm.$lang --corpus $preprocessed/train.$lang
         
@@ -43,14 +45,14 @@ for lang in $src_lang $tgt_lang
 
 echo "preparing data for model training..."
 
-python $base/preprocess.py \
+python3 "$base/preprocess.py" \
     --source-lang $src_lang \
     --target-lang $tgt_lang \
-    --dest-dir $prepared \
-    --train-prefix $preprocessed/train \
-    --valid-prefix $preprocessed/valid \
-    --test-prefix $preprocessed/test \
-    --tiny-train-prefix $preprocessed/tiny_train \
+    --dest-dir "$prepared" \
+    --train-prefix "$preprocessed/train" \
+    --valid-prefix "$preprocessed/valid" \
+    --test-prefix "$preprocessed/test" \
+    --tiny-train-prefix "$preprocessed/tiny_train" \
     --threshold-src 1 \
     --threshold-tgt 1 \
     --num-words-src 4000 \

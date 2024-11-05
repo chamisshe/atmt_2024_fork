@@ -106,16 +106,22 @@ def main(args):
     def load_data_bpe(split):
         src_file=os.path.join(args.data, '{:s}.{:s}'.format(split, args.source_lang))
         tgt_file=os.path.join(args.data, '{:s}.{:s}'.format(split, args.target_lang))
-        argdict = {
-            'vocab_bpe' : f'{bpe_modelname}.vocab',
-            'source_lang' :  args.source_lang,
-            'target_lang' : args.target_lang,
-            'split' : split,
-            'dest_dir' : os.path.join(args.data, "..", "prepared", '{:s}.{:s}'.format("train", args.source_lang)),
-        }
-        bpeargs = argparse.Namespace(**argdict)
-        print("preprocessing")
-        preprocess_bpe.main(bpeargs)
+
+        # argdict = {
+        #     'vocab_bpe' : f'{bpe_modelname}.vocab',
+        #     'source_lang' :  args.source_lang,
+        #     'target_lang' : args.target_lang,
+        #     'split' : split,
+        #     'dest_dir' : os.path.join(args.data, "..", "prepared", '{:s}.{:s}'.format("train", args.source_lang)),
+        # }
+        # bpeargs = argparse.Namespace(**argdict)
+        # print("preprocessing")
+        # preprocess_bpe.main(bpeargs)
+        sp = spm.SentencePieceProcessor(model_file=f'{bpe_modelname}.model')
+
+        with open("", "r", encoding="utf8") as f:
+            encoded = sp.Encode(f.readlines(), out_type="id")
+
 
         return Seq2SeqDataset(
             src_file,
